@@ -1,14 +1,18 @@
 package A2Z.DP.DPOnGrids;
 
 public class NinjasTraining {
-    public static int ninjaTraining(int n, int[][] points) {
-        return helper(n, points, 0);
-    }
+    public static int ninjaTraining(int n, int points[][]) {
+        int[][] dp = new int[n][3];
+        dp[0][0] = points[0][0];
+        dp[0][1] = points[0][1];
+        dp[0][2] = points[0][2];
+        for (int i = 1; i < n; i++) {
+            int prevAct0 = dp[i - 1][0], prevAct1 = dp[i - 1][1], prevAct2 = dp[i - 1][2];
+            dp[i][0] = points[i][0] + Math.max(prevAct1, prevAct2);
+            dp[i][1] = points[i][1] + Math.max(prevAct0, prevAct2);
+            dp[i][2] = points[i][2] + Math.max(prevAct1, prevAct0);
 
-    private static int helper(int n, int[][] points, int index){
-        if(index==n){return 0;}
-        int activity1=points[index][0]+Math.max(helper(n, points, index+1),helper(n, points, index+1)),
-        activity2=points[index][1]+Math.max(helper(n, points, index+1),helper(n, points, index+1)),
-        activity3=points[index][2];
+        }
+        return Math.max(dp[n - 1][0], Math.max(dp[n - 1][1], dp[n - 1][2]));
     }
 }
